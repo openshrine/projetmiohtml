@@ -134,25 +134,76 @@ h4 {
 }
 
 #packs {
-    display: grid;
+    /*display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     gap: 10px;
+    justify-content: center;*/
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 20px;
     justify-content: center;
+    position: relative;
 }
 
 .pack123 {
     border: #e0cfac solid 1px;
     background-image: url('./data/sepia-plasterboard-texture.jpg');
     background-size: 1%;
+    border-radius: 25px;
+    padding: 15px;
+    transition: transform 0.3s, box-shadow 0.3s;
+    /* Pour les animations */
+    position: relative;
+    z-index: 1;
+    /*border: #e0cfac solid 3px;
+    background-color: rgb(243, 236, 222);
+    background-image: url('./data/sepia-plasterboard-texture.jpg');
+    background-size: 1%;
 
     border-radius: 25px;
     padding: 15px;
-    margin: 0 40px;
+    margin: 0 40px;*/
 }
 
 .pack123 h5 {
     font-size: large;
 }
+
+.pack123:hover {
+    transform: scale(1.05);
+    /* Agrandissement au survol */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+    /* Effet d'ombre */
+}
+
+.pack123.open {
+    position: absolute;
+    top: 10%;
+    left: 50%;
+    transform: translateX(-50%) scale(1.2);
+    width: 80%;
+    height: auto;
+    z-index: 1000;
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.5);
+    background-size: cover;
+    transition: transform 0.3s, width 0.3s, height 0.3s;
+}
+
+.pack123.open .btn-en-savoir-plus {
+    display: none;
+}
+
+.pack123.open .btn-nous-contacter {
+    display: block;
+}
+
+body.overlay {
+    overflow: hidden;
+    /* Empêche le défilement quand une div est ouverte */
+    background: rgba(0, 0, 0, 0.5);
+    /* Ajoute un effet de superposition */
+}
+
 
 #contact {
     display: grid;
