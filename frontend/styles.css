@@ -121,9 +121,12 @@ nav a {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
+
+
 #nos-offres {
     display: grid;
     grid-template-rows: 1fr;
+    justify-content: center;
     align-items: center;
 }
 
@@ -137,6 +140,7 @@ h4 {
     border-radius: 15px;
     display: flex;
     justify-content: center;
+    align-items: center;
 }
 
 
