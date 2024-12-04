@@ -6,6 +6,7 @@ body {
     align-content: center;
 }
 
+
 a {
     text-decoration: none;
 }
@@ -82,25 +83,28 @@ nav a {
     justify-content: space-between;
     background-image: url("./data/sepia-plasterboard-texture.jpg");
     background-size: 1%;
-    padding: 40px;
-    margin: auto;
+    padding: 30px;
+    margin: 50px auto;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+
 }
 
 .description {
     flex: 1;
     margin-right: 30px;
-    padding-right: 20px;
+    padding-right: 15px;
 }
 
 .description h3 {
-    font-size: 24px;
+    font-size: 20px;
     color: black;
+
 }
 
 .description p {
-    font-size: 16px;
+    font-size: 22px;
     line-height: 1.8;
+    text-align: justify;
 }
 
 .pic {
@@ -131,84 +135,110 @@ h4 {
     width: 15%;
     border: solid #e0cfac 1px;
     border-radius: 15px;
+    display: flex;
+    justify-content: center;
 }
 
+
 #packs {
-    /*display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 10px;
-    justify-content: center;*/
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: repeat(3, 1fr);
     gap: 20px;
     justify-content: center;
     position: relative;
+    height: fit-content;
+}
+
+h5 {
+    text-align: center;
+    font-size: larger;
 }
 
 .pack123 {
-    border: #e0cfac solid 1px;
-    background-image: url('./data/sepia-plasterboard-texture.jpg');
-    background-size: 1%;
-    border-radius: 25px;
-    padding: 15px;
-    transition: transform 0.3s, box-shadow 0.3s;
-    /* Pour les animations */
-    position: relative;
-    z-index: 1;
-    /*border: #e0cfac solid 3px;
+    border: #e0cfac solid 3px;
     background-color: rgb(243, 236, 222);
-    background-image: url('./data/sepia-plasterboard-texture.jpg');
-    background-size: 1%;
-
     border-radius: 25px;
     padding: 15px;
-    margin: 0 40px;*/
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    font-size: 20px;
 }
 
-.pack123 h5 {
-    font-size: large;
+#pack-personnalite:hover {
+    transform: translateX(100px);
+
+    transform: scale(1.1);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 }
 
-.pack123:hover {
-    transform: scale(1.05);
-    /* Agrandissement au survol */
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
-    /* Effet d'ombre */
+#pack-histoire:hover {
+    width: 550px;
+    transform: scale(1.1);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 }
 
-.pack123.open {
-    position: absolute;
-    top: 10%;
-    left: 50%;
-    transform: translateX(-50%) scale(1.2);
-    width: 80%;
-    height: auto;
-    z-index: 1000;
-    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.5);
-    background-size: cover;
-    transition: transform 0.3s, width 0.3s, height 0.3s;
+#pack-image:hover {
+    transform: translateX(50px);
+    width: 550px;
+    transform: scale(1.1);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 }
 
-.pack123.open .btn-en-savoir-plus {
-    display: none;
+.pack123:hover .btn-en-savoir-plus {
+    opacity: 0;
+    visibility: hidden;
 }
 
-.pack123.open .btn-nous-contacter {
-    display: block;
+.pack123 ul {
+    list-style: none;
+    padding: 0;
+    margin: 10px 0;
 }
 
-body.overlay {
-    overflow: hidden;
-    /* Empêche le défilement quand une div est ouverte */
-    background: rgba(0, 0, 0, 0.5);
-    /* Ajoute un effet de superposition */
+.pack123 ul li {
+    margin-bottom: 8px;
+}
+
+#pack-personnalite:hover ul,
+#pack-histoire:hover ul,
+#pack-image:hover ul {
+    list-style: none;
+    padding: 0;
+    margin-top: 20px;
+}
+
+#pack-personnalite:hover ul li,
+#pack-histoire:hover ul li,
+#pack-image:hover ul li {
+    margin-bottom: 15px;
+}
+
+/* Boutons */
+button {
+    margin-top: 15px;
+    padding: 10px 15px;
+    border: none;
+    background: #e0cfac;
+    color: black;
+    cursor: pointer;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background: #d3b77b;
 }
 
 
 #contact {
-    display: grid;
-    grid-template-columns: 1fr;
-
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 50px;
+    margin-bottom: 40px;
 }
 
 #contact form {
@@ -217,6 +247,19 @@ body.overlay {
     justify-content: center;
     width: 30%;
     padding-bottom: 30px;
+}
+
+input {
+    border: #e0cfac solid 1px;
+    border-radius: 15px;
+    height: 30px;
+    margin-top: 5px;
+    margin-bottom: 10px;
+}
+
+textarea {
+    border: #e0cfac solid 1px;
+    border-radius: 15px;
 }
 
 #contact form button {
@@ -235,6 +278,7 @@ body.overlay {
     flex-direction: row;
     justify-content: center;
     padding-bottom: 20px;
+    margin-top: 50px;
 }
 
 #socials img {
