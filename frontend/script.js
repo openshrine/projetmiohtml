@@ -87,3 +87,39 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 });
+
+document.getElementById('contactForm').addEventListener('submit', async (e) => {
+    e.preventDefault(); // Empêche le rechargement de la page
+
+    // Récupérer les données du formulaire
+    const formData = {
+        name: document.getElementById('nom').value,
+        surname: document.getElementById('prenom').value,
+        telephone: document.getElementById('telephone').value,
+        email: document.getElementById('email').value,
+        date: document.getElementById('wedding-date').value,
+        offer: document.getElementById('pack-choice').value,
+        message: document.getElementById('message').value,
+    };
+
+    try {
+        // Envoyer les données au serveur
+        const response = await fetch('http://localhost:3001/submit-form', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(formData),
+        });
+
+        if (response.ok) {
+            const result = await response.json();
+            alert('Formulaire envoyé avec succès !');
+            console.log(result);
+        } else {
+            const error = await response.json();
+            alert('Erreur : ' + error.message);
+        }
+    } catch (err) {
+        console.error('Erreur lors de l\'envoi du formulaire :', err);
+        alert('Une erreur est survenue. Veuillez réessayer.');
+    }
+});
