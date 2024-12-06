@@ -104,6 +104,9 @@ document.getElementById('contactForm').addEventListener('submit', async (e) => {
 
     try {
         // Envoyer les données au serveur
+
+        console.log('Données envoyées au backend :', formData);
+
         const response = await fetch('http://localhost:3001/submit-form', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },

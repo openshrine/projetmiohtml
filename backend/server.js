@@ -6,9 +6,10 @@ const mongoose = require('mongoose');
 const app = express();
 const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
-const mailgun = require('mailgun-js')
+const mailgun = require('mailgun-js'); // Assurez-vous que Mailgun est installé : npm install mailgun-js
 const { body, validationResult } = require('express-validator');
 
+// Connexion à la base de données MongoDB
 mongoose.connect('mongodb+srv://miomariage:89fdrFz5mr77Ch6w@mio.n31s6.mongodb.net/?retryWrites=true&w=majority&appName=Mio', {
     useNewUrlParser: true,
     useUnifiedTopology: true,
@@ -27,14 +28,20 @@ app.use(bodyParser.json());
 const formSchema = new mongoose.Schema({
     name: { type: String, required: true },
     surname: { type: String, required: true },
+    telephone: { type: String, required: true },
     email: { type: String, required: true },
-    telephone: { type: Number, required: true },
     date: { type: String, required: true },
     offer: { type: String, required: true },
     message: { type: String, required: true },
 });
 
 const FormData = mongoose.model('FormData', formSchema);
+
+// Configuration de Mailgun
+const mg = mailgun({
+    apiKey: process.env.MAILGUN_API_KEY, // Clé API de Mailgun dans le fichier .env
+    domain: process.env.MAILGUN_DOMAIN, // Domaine Mailgun dans le fichier .env
+});
 
 // Route pour recevoir et sauvegarder les données du formulaire
 app.post('/submit-form', [
@@ -48,44 +55,51 @@ app.post('/submit-form', [
     body('email').isEmail().withMessage('L\'email doit être valide'),
     body('message').not().isEmpty().withMessage('Le message est requis'),
 ], async (req, res) => {
+    console.log('Données reçues depuis le frontend :', req.body);
+
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
+        console.log('Erreurs de validation :', errors.array());
         return res.status(400).json({ errors: errors.array() });
     }
 
     const { name, surname, telephone, date, offer, email, message } = req.body;
+    console.log({ name, surname, telephone, date, offer, email, message });
 
     try {
+        console.log('Tentative de sauvegarde dans MongoDB...');
         const newFormData = new FormData({ name, surname, email, telephone, date, offer, message });
         await newFormData.save();
+        console.log('Données sauvegardées avec succès !');
 
-        const data = {
-            from: process.env.MAILGUN_SENDER,
+        const mailData = {
+            from: process.env.MAILGUN_SENDER, // Adresse expéditeur configurée dans .env
             to: 'mio.mariage@gmail.com', // Adresse email qui reçoit les messages
-            subject: 'Nouveau message de formulaire',
-            text: `Vous avez reçu un nouveau message de ${name} (${email}):
-            
-            Message : ${message}
-
+            subject: 'Nouveau message posté sur Mio !',
+            text: `
+            Nom : ${surname}
+            Prénom : ${name}
             Téléphone : ${telephone}
-            Date de l'événement : ${date}
-            Offre choisie : ${offer}`,
+            Email : ${email}
+            Date : ${date}
+            Offre : ${offer}
+            Message : ${message}
+        `,
         };
 
-        mg.messages().send(data, (error, body) => {
+        mg.messages().send(mailData, (error, body) => {
             if (error) {
-                console.error('Erreur Mailgun:', error);
+                console.error('Erreur lors de l\'envoi de l\'email :', error);
                 return res.status(500).json({ message: 'Erreur lors de l\'envoi de l\'email', error: error.message });
             }
-            console.log('Email envoyé:', body);
+            console.log('Email envoyé avec succès :', body);
             res.json({ message: 'Formulaire reçu et email envoyé avec succès', data: req.body });
         });
     } catch (error) {
-        console.error('Erreur lors de la sauvegarde des données:', error);
+        console.error('Erreur lors de la sauvegarde des données :', error);
         res.status(500).json({ message: 'Erreur lors de la sauvegarde des données', error: error.message });
     }
 });
-
 
 // Utiliser helmet pour ajouter des headers de sécurité
 app.use(helmet());
